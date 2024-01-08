@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import {Main} from './Main'
-import {Profile} from './Profile'
+import {Main} from './Components/Main'
+import {Profile} from './Components/Profile'
 
 function App() {
   return (
