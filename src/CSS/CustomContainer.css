@@ -1,5 +1,27 @@
 
+.nameandstatus{
+    margin: 8px;
+}
+
+.nameandstatus p{
+    margin: 0;
+}
+
+
+
 .custom-container{
     display: flex;
     justify-content: center;
+}
+
+.counters{
+    padding-bottom: 8px;
+}
+
+.counters .item:not(:last-child){
+    margin-right: 10px;
+}
+
+.counters .item p{
+    margin: 0;
 }
