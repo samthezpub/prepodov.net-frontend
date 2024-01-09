@@ -36,7 +36,7 @@ export function Nav() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar style={{marginBottom:"20px"}} position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
