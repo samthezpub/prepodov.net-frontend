@@ -7,12 +7,45 @@ import defaultAvatar from '../Images/standartavatar.jpg';
 import like from '../Images/like.svg';
 import repost from '../Images/repost.svg';
 import SendIcon from '@mui/icons-material/Send';
+import axios from 'axios';
+import { useState } from 'react';
+
+
+
+var userId = getCurrentUserId();
+
+function getCurrentUserId(params) {
+    return 6; 
+    // Реализация будет добавлена, когда будет настроен spring security
+}
+
+
 
 function onSubmitComment(event) {
     alert("Hello frogs!");
 }
 
 export function Profile(params) {
+    const [userId, setUserId] = useState(getCurrentUserId)
+    const [username, setUsername] = useState("Загрузка");
+
+        
+
+    async function userName(userId) {
+        fetch(`http://localhost:8080/api/v1/getuser/${userId}`, {
+            mode: 'cors',
+
+        })
+            .then(resp => resp.json())
+            .then(data => setUsername(data["username"]));
+            console.log(username);
+    }
+
+
+
+
+
+    userName(userId);
     return (
         <div>
             <Nav></Nav>
@@ -29,7 +62,7 @@ export function Profile(params) {
                             <div className='about' style={{ backgroundColor: "white", padding: "1px", marginBottom: "8px" }}>
                                 <div className='nameandstatus' style={{ display: 'flex', justifyContent: "space-between", padding: "8px 15px 0", margin: "0" }}>
                                     <div className='name'>
-                                        <p>Vasya Vasev</p>
+                                        <p>{username}</p>
                                     </div>
                                     <div className='status'>
                                         <p>Online</p>
