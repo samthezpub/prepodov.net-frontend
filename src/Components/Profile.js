@@ -9,16 +9,7 @@ import repost from '../Images/repost.svg';
 import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
-
-
-
-var userId = getCurrentUserId();
-
-function getCurrentUserId(params) {
-    return 6; 
-    // Реализация будет добавлена, когда будет настроен spring security
-}
-
+import { useAsync } from 'react-async';
 
 
 function onSubmitComment(event) {
@@ -26,29 +17,39 @@ function onSubmitComment(event) {
 }
 
 export function Profile(params) {
-    const [userId, setUserId] = useState(getCurrentUserId)
-    const [user, setUser] = useState(1);
+    const [userId, setUserId] = useState()
+    const [user, setUser] = useState();
 
-    
+    async function getCurrentUserId(params) {
 
-    async function getUser(userId) {
-        fetch(`http://localhost:8080/api/v1/getuser/${userId}`, {
-            mode: 'cors',
-
-        })
-            .then(resp => resp.json())
-            .then(data => setUser(data));
-            console.log(user);
+        return 6;
+        // Реализация будет добавлена, когда будет настроен spring security
     }
 
+    async function getUser() {
+        let userId = await getCurrentUserId();
+        try {
+            const resp = await fetch(`http://localhost:8080/api/v1/getuser/${userId}`, {
+                mode: 'cors',
+            });
+
+            const data = await resp.json()
+                .then((data) => {
+                    setUser(data);
+                    console.log(data)
+                })
+            return data; // Возвращаем данные, если нужно использовать их где-то еще
+        } catch (error) {
+            console.error('Произошла ошибка при запросе пользователя:', error);
+            throw error; // Можно обработать ошибку здесь или просто выбросить её дальше
+        }
+    }
 
     useEffect(() => {
-      getUser(userId);
-
+        getUser()
     }, [])
+
     
-
-
 
     return (
         <div>
@@ -66,7 +67,7 @@ export function Profile(params) {
                             <div className='about' style={{ backgroundColor: "white", padding: "1px", marginBottom: "8px" }}>
                                 <div className='nameandstatus' style={{ display: 'flex', justifyContent: "space-between", padding: "8px 15px 0", margin: "0" }}>
                                     <div className='name'>
-                                        <p>{user.username}</p>
+                                        <p>{user && user.username}</p>
                                     </div>
                                     <div className='status'>
                                         <p>Online</p>
@@ -93,22 +94,22 @@ export function Profile(params) {
 
                                 <div className='counters' style={{ display: 'flex', justifyContent: "center", textAlign: "center" }}>
                                     <div className='item'>
-                                        <p>4</p>
+                                        <p>{user && user.friends.length}</p>
                                         <p>Друзей</p>
                                     </div>
                                     <div className='item'>
-                                        <p>2</p>
-                                        <p>Фотографий</p>
+                                        <p>{user && user.posts.length}</p>
+                                        <p>Постов</p>
                                     </div>
                                     <div className='item'>
-                                        <p>2</p>
-                                        <p>Поста</p>
+                                        <p>{user && user.posts.length}</p>
+                                        <p>Групп</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div className='posts' style={{ boxSizing: "border-box" }}>
-                                <div className='post' style={{ height: "100%", backgroundColor: "white", padding: "8px" , marginBottom:"10px"}}>
+                                <div className='post' style={{ height: "100%", backgroundColor: "white", padding: "8px", marginBottom: "10px" }}>
                                     <div className='creator' style={{ display: 'flex', alignItems: "center", marginBottom: "8px" }}>
                                         <div className='left' style={{ height: "48px", width: "48px", marginRight: "5px" }}>
                                             <img src={defaultAvatar} style={{ height: "48px", width: "48px", borderRadius: "100px" }}></img>
@@ -131,23 +132,23 @@ export function Profile(params) {
                                         <img className='repost item' src={repost}></img>
                                     </div>
 
-                                    <div className='comments' style={{ display: "flex", marginBottom:"8px" }}>
+                                    <div className='comments' style={{ display: "flex", marginBottom: "8px" }}>
                                         <form method='post' onSubmit={onSubmitComment}>
-                                                <TextField
-                                                    id="outlined-multiline-flexible"
-                                                    label="Написать комментарий"
-                                                    className='comment_input'
-                                                    multiline
-                                                    maxRows={1}
-                                                />
-                                                <IconButton type='submit' className='submit_button' variant="contained">
-                                                    <SendIcon></SendIcon>
-                                                </IconButton>
+                                            <TextField
+                                                id="outlined-multiline-flexible"
+                                                label="Написать комментарий"
+                                                className='comment_input'
+                                                multiline
+                                                maxRows={1}
+                                            />
+                                            <IconButton type='submit' className='submit_button' variant="contained">
+                                                <SendIcon></SendIcon>
+                                            </IconButton>
                                         </form>
                                     </div>
                                 </div>
 
-                                <div className='post' style={{ height: "100%", backgroundColor: "white", padding: "8px" , marginBottom:"10px"}}>
+                                <div className='post' style={{ height: "100%", backgroundColor: "white", padding: "8px", marginBottom: "10px" }}>
                                     <div className='creator' style={{ display: 'flex', alignItems: "center", marginBottom: "8px" }}>
                                         <div className='left' style={{ height: "48px", width: "48px", marginRight: "5px" }}>
                                             <img src={defaultAvatar} style={{ height: "48px", width: "48px", borderRadius: "100px" }}></img>
@@ -170,18 +171,18 @@ export function Profile(params) {
                                         <img className='repost item' src={repost}></img>
                                     </div>
 
-                                    <div className='comments' style={{ display: "flex", marginBottom:"8px" }}>
+                                    <div className='comments' style={{ display: "flex", marginBottom: "8px" }}>
                                         <form method='post' onSubmit={onSubmitComment}>
-                                                <TextField
-                                                    id="outlined-multiline-flexible"
-                                                    label="Написать комментарий"
-                                                    className='comment_input'
-                                                    multiline
-                                                    maxRows={1}
-                                                />
-                                                <IconButton type='submit' className='submit_button' variant="contained">
-                                                    <SendIcon></SendIcon>
-                                                </IconButton>
+                                            <TextField
+                                                id="outlined-multiline-flexible"
+                                                label="Написать комментарий"
+                                                className='comment_input'
+                                                multiline
+                                                maxRows={1}
+                                            />
+                                            <IconButton type='submit' className='submit_button' variant="contained">
+                                                <SendIcon></SendIcon>
+                                            </IconButton>
                                         </form>
                                     </div>
                                 </div>
