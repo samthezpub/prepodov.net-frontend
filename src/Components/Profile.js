@@ -8,7 +8,7 @@ import like from '../Images/like.svg';
 import repost from '../Images/repost.svg';
 import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 
 
@@ -27,25 +27,29 @@ function onSubmitComment(event) {
 
 export function Profile(params) {
     const [userId, setUserId] = useState(getCurrentUserId)
-    const [username, setUsername] = useState("Загрузка");
+    const [user, setUser] = useState(1);
 
-        
+    
 
-    async function userName(userId) {
+    async function getUser(userId) {
         fetch(`http://localhost:8080/api/v1/getuser/${userId}`, {
             mode: 'cors',
 
         })
             .then(resp => resp.json())
-            .then(data => setUsername(data["username"]));
-            console.log(username);
+            .then(data => setUser(data));
+            console.log(user);
     }
 
 
+    useEffect(() => {
+      getUser(userId);
+
+    }, [])
+    
 
 
 
-    userName(userId);
     return (
         <div>
             <Nav></Nav>
@@ -62,7 +66,7 @@ export function Profile(params) {
                             <div className='about' style={{ backgroundColor: "white", padding: "1px", marginBottom: "8px" }}>
                                 <div className='nameandstatus' style={{ display: 'flex', justifyContent: "space-between", padding: "8px 15px 0", margin: "0" }}>
                                     <div className='name'>
-                                        <p>{username}</p>
+                                        <p>{user.username}</p>
                                     </div>
                                     <div className='status'>
                                         <p>Online</p>
