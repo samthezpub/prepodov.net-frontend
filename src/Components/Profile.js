@@ -134,9 +134,16 @@ export function Profile(params) {
                                         </div>
                                     </div>
 
-                                    <div className='actions' style={{ marginBottom: "8px" }}>
-                                        <img className='like item' src={like}></img>
-                                        <img className='repost item' src={repost}></img>
+                                    <div className='actions' style={{ display:"flex" ,marginBottom: "8px" }}>
+                                        <div className='like_container item' style={{display:"flex", alignItems:"center"}}>
+                                            <img className='like' src={like} style={{marginRight:"4px"}}></img>
+                                            <span className='like_counter'>{post.likes}</span>
+                                        </div>
+                                        <div className='repost_container item' style={{display:"flex", alignItems:"center"}}>
+                                            <img className='repost' src={repost}></img>
+                                            <span className='repost_counter'>{post.reposts}</span>
+                                        </div>
+                                        
                                     </div>
 
                                     <div className='comments' style={{ display: "flex", marginBottom: "8px" }}>
