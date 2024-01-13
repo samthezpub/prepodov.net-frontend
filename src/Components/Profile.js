@@ -111,43 +111,8 @@ export function Profile(params) {
                             </div>
 
                             <div className='posts' style={{ boxSizing: "border-box" }}>
-                                <div className='post' style={{ height: "100%", backgroundColor: "white", padding: "8px", marginBottom: "10px" }}>
-                                    <div className='creator' style={{ display: 'flex', alignItems: "center", marginBottom: "8px" }}>
-                                        <div className='left' style={{ height: "48px", width: "48px", marginRight: "5px" }}>
-                                            <img src={defaultAvatar} style={{ height: "48px", width: "48px", borderRadius: "100px" }}></img>
-                                        </div>
-
-                                        <div className='right'>
-                                            <p className='name'>Vasya Vasev</p>
-                                            <p className='date'>10 апреля</p>
-                                        </div>
-                                    </div>
-
-                                    <div className='content' style={{ marginBottom: "8px" }}>
-                                        <div className='avatar_cover' style={{ display: "flex", justifyContent: "center", width: "100%", height: "100%" }}>
-                                            <img src={defaultAvatar} style={{ width: "80%", height: "80%" }}></img>
-                                        </div>
-                                    </div>
-
-                                    <div className='actions' style={{ marginBottom: "8px" }}>
-                                        <img className='like item' src={like}></img>
-                                        <img className='repost item' src={repost}></img>
-                                    </div>
-
-                                    <div className='comments' style={{ display: "flex", marginBottom: "8px" }}>
-                                        <form method='post' onSubmit={onSubmitComment}>
-                                            <TextField
-                                                id="outlined-multiline-flexible"
-                                                label="Написать комментарий"
-                                                className='comment_input'
-                                                multiline
-                                                maxRows={1}
-                                            />
-                                            <IconButton type='submit' className='submit_button' variant="contained">
-                                                <SendIcon></SendIcon>
-                                            </IconButton>
-                                        </form>
-                                    </div>
+                                <div style={{height: "100%", backgroundColor: "white", padding: "8px", marginBottom:"8px"}}>
+                                    <h2>Ваши посты</h2>
                                 </div>
                                 {user && user.posts.map((post, index) =>{
                                     return(
@@ -159,7 +124,7 @@ export function Profile(params) {
 
                                         <div className='right'>
                                             <p className='name'>{user.username}</p>
-                                            <p className='date'>{post.posted_at}</p>
+                                            <p className='date'>{post.postedAtFormatted}</p>
                                         </div>
                                     </div>
 
