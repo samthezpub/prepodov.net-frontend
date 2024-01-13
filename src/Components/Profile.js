@@ -28,6 +28,8 @@ export function Profile(params) {
 
     async function getUser() {
         let userId = await getCurrentUserId();
+        setUserId(userId)
+
         try {
             const resp = await fetch(`http://localhost:8080/api/v1/getuser/${userId}`, {
                 mode: 'cors',
@@ -84,9 +86,9 @@ export function Profile(params) {
                                     </div>
 
                                     <div className='values'>
-                                        <p>30.05.2003</p>
-                                        <p>Москва</p>
-                                        <p>РУТ МИИТ</p>
+                                        <p>{user && user.birthdate}</p>
+                                        <p>{user && user.city}</p>
+                                        <p>{user && user.education}</p>
                                     </div>
                                 </div>
 
@@ -147,22 +149,23 @@ export function Profile(params) {
                                         </form>
                                     </div>
                                 </div>
-
-                                <div className='post' style={{ height: "100%", backgroundColor: "white", padding: "8px", marginBottom: "10px" }}>
+                                {user && user.posts.map((post, index) =>{
+                                    return(
+                                        <div className='post' style={{ height: "100%", backgroundColor: "white", padding: "8px", marginBottom: "10px" }}>
                                     <div className='creator' style={{ display: 'flex', alignItems: "center", marginBottom: "8px" }}>
                                         <div className='left' style={{ height: "48px", width: "48px", marginRight: "5px" }}>
                                             <img src={defaultAvatar} style={{ height: "48px", width: "48px", borderRadius: "100px" }}></img>
                                         </div>
 
                                         <div className='right'>
-                                            <p className='name'>Vasya Vasev</p>
-                                            <p className='date'>10 апреля</p>
+                                            <p className='name'>{user.username}</p>
+                                            <p className='date'>{post.posted_at}</p>
                                         </div>
                                     </div>
 
                                     <div className='content' style={{ marginBottom: "8px" }}>
                                         <div className='avatar_cover' style={{ display: "flex", justifyContent: "center", width: "100%", height: "100%" }}>
-                                            <p>„Hello frogs!“</p>
+                                            <p>{post.content}</p>
                                         </div>
                                     </div>
 
@@ -186,6 +189,9 @@ export function Profile(params) {
                                         </form>
                                     </div>
                                 </div>
+                                    )
+                                })}
+                                
                             </div>
                         </div>
                     </div>
