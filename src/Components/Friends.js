@@ -53,7 +53,7 @@ export function Friends(params) {
                     <div className="cards" style={{ width: "100%", height: "100%" }}>
                         {user && user.friends.map((friend, index) => {
                             return (
-                                <div className="card" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                <div className="card" key={index} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                     <div className="left" style={{ display: "flex", alignItems: "center" }}>
                                         <div className="image">
                                             <img width={"64px"} height={"64px"} src={standartavatar} style={{ borderRadius: "200px", marginRight: "10px" }}></img>
