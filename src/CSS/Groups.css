@@ -1,0 +1,7 @@
+.card:not(:last-child){
+    margin-bottom: 8px;
+}
+
+.card h3{
+    margin: 0;
+}
