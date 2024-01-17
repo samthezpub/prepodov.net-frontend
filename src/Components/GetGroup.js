@@ -8,16 +8,37 @@ import repost from '../Images/repost.svg';
 
 import '../CSS/GetGroup.css';
 import standartavatar from '../Images/standartavatar.jpg';
+import { useEffect, useState } from 'react';
 
 export function GetGroup(params) {
 
     const { id } = useParams();
 
-    let group;
 
-    function getGroupById(id) {
+    async function getGroupById(id) {
+        try {
+            const resp = await fetch(`http://localhost:8080/api/v1/groups/${id}`, {
+                mode: 'cors',
+            });
+
+            const data = await resp.json()
+                .then((data) => {
+                    setGroup(data);
+                    console.log(data)
+                })
+            return data; // Возвращаем данные, если нужно использовать их где-то еще
+        } catch (error) {
+            throw error; // Можно обработать ошибку здесь или просто выбросить её дальше
+        }
 
     }
+
+    const [group, setGroup] = useState();
+
+    useEffect(() => {
+        getGroupById(id);
+    }, [])
+
 
     return (
         <div>
@@ -32,8 +53,8 @@ export function GetGroup(params) {
                                 <img src={standartavatar} width={"64px"} height={"64px"}></img>
                             </div>
                             <div className='info'>
-                                <h3 className='public_name'>Типичный паблик</h3>
-                                <p>100.000 подписчиков</p>
+                                <h3 className='public_name'>{group.name}</h3>
+                                <p>{group.users.length + " подписчиков"}</p>
                             </div>
                         </div>
 
@@ -45,9 +66,9 @@ export function GetGroup(params) {
                         </div>
                     </div>
 
-                    <div className='left-right_blocks' style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+                    <div className='left-right_blocks' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 
-                        <div className='blocks_left' style={{width:"70%"}}>
+                        <div className='blocks_left' style={{ width: "70%" }}>
                             <div className='posts'>
                                 <div className='posts' style={{ boxSizing: "border-box" }}>
                                     <div style={{ height: "100%", backgroundColor: "white", padding: "8px", marginBottom: "8px" }}>
@@ -62,7 +83,7 @@ export function GetGroup(params) {
                                                     </div>
 
                                                     <div className='right'>
-                                                        <p className='name'>{group.username}</p>
+                                                        <p className='name'>{post.name}</p>
                                                         <p className='date'>{post.postedAtFormatted}</p>
                                                     </div>
                                                 </div>
@@ -108,10 +129,8 @@ export function GetGroup(params) {
                         </div>
 
 
-                        <div className='blocks_right' style={{width:"20%"}}>
-                            <div className='about'>
-                                Этот Типичный паблик с типичными постами создан для развлечения :)
-                            </div>
+                        <div className='blocks_right' style={{ width: "20%" }}>
+                            <div className='about'>{group.description}</div>
                         </div>
                     </div>
                 </main>
